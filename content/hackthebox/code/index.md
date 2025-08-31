@@ -64,7 +64,7 @@ As you can see, "os" is filtered despite only being called in a print statement.
 
 Ezpz. We've proven that we can bypass the web filter while running "malicious" code. Now we have to somehow come up with bypassable code that runs a reverse shell.
 
-### Popping The Shell
+### Popping a Shell
 We know that we can bypass the filter using string concatenation, so let's figure out how to call python functions with string literals.
 
 The question we must ask ourselves is: *how are functions called in python?*. If we were to look at a compiled language like C, the compiler creates a data structure called the [Symbol Table](https://en.wikipedia.org/wiki/Symbol_table). Python also has a symbol table that gets created during bytecode compilation; however, it also has dynamic structures called *namespaces* that get created at runtime.
@@ -403,6 +403,6 @@ martin@code:~/root$ cat root.txt
 <REDACTED>
 ```
 ## Conclusion
-This box was overall very fun and well made. I had to learn a lot about the inner-workings of the Python programming language and realized there was so much more to know about it (as it is with everything). There were probably 100's of better ways to exploit the web filter, but I hacked what I could together and got it done. The privesc was easy, but honestly it was welcomed after I spent so much time figuring out the foothold.
+This box was overall very fun and well made. I had to learn a lot about the inner-workings of the Python programming language and realized there was so much more to know (as it is with everything). There were probably 100's of better ways to exploit the web filter, but I hacked what I could together and got it done. The privesc was easy, but honestly it was welcomed after I spent so much time figuring out the foothold.
 
 Thank you for reading. Hopefully you learned something. If there were any spelling errors, ramblings, etc. I blame myself for doing this so late at night. Till next time!
