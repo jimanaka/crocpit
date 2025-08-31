@@ -67,7 +67,7 @@ Ezpz. We've proven that we can bypass the web filter while running "malicious" c
 ### Popping a Shell
 We know that we can bypass the filter using string concatenation, so let's figure out how to call python functions with string literals.
 
-The question we must ask ourselves is: *how are functions called in python?*. If we were to look at a compiled language like C, the compiler creates a data structure called the [Symbol Table](https://en.wikipedia.org/wiki/Symbol_table). Python also has a symbol table that gets created during bytecode compilation; however, it also has dynamic structures called *namespaces* that get created at runtime.
+The question we must ask ourselves is: *how are functions called in python?*. If we were to look at a compiled language like C, the compiler creates a data structure called the [Symbol Table](https://en.wikipedia.org/wiki/Symbol_table). Python also has a symbol table that gets created during bytecode compilation; however, it also has dynamic structures called `namespaces` that get created at runtime.
 
 We can use these namespaces to see what global/built-in functions are available, then call them with **string literals**.
 
@@ -78,9 +78,9 @@ If we look at the normal built-in functions, we can see some useful modules and 
 ['ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException', 'BaseExceptionGroup', 'BlockingIOError', 'BrokenPipeError', 'BufferError', 'BytesWarning', 'ChildProcessError', 'ConnectionAbortedError', 'ConnectionError', 'ConnectionRefusedError', 'ConnectionResetError', 'DeprecationWarning', 'EOFError', 'Ellipsis', 'EncodingWarning', 'EnvironmentError', 'Exception', 'ExceptionGroup', 'False', 'FileExistsError', 'FileNotFoundError', 'FloatingPointError', 'FutureWarning', 'GeneratorExit', 'IOError', 'ImportError', 'ImportWarning', 'IndentationError', 'IndexError', 'InterruptedError', 'IsADirectoryError', 'KeyError', 'KeyboardInterrupt', 'LookupError', 'MemoryError', 'ModuleNotFoundError', 'NameError', 'None', 'NotADirectoryError', 'NotImplemented', 'NotImplementedError', 'OSError', 'OverflowError', 'PendingDeprecationWarning', 'PermissionError', 'ProcessLookupError', 'PythonFinalizationError', 'RecursionError', 'ReferenceError', 'ResourceWarning', 'RuntimeError', 'RuntimeWarning', 'StopAsyncIteration', 'StopIteration', 'SyntaxError', 'SyntaxWarning', 'SystemError', 'SystemExit', 'TabError', 'TimeoutError', 'True', 'TypeError', 'UnboundLocalError', 'UnicodeDecodeError', 'UnicodeEncodeError', 'UnicodeError', 'UnicodeTranslateError', 'UnicodeWarning', 'UserWarning', 'ValueError', 'Warning', 'ZeroDivisionError', '_IncompleteInputError', '__build_class__', '__debug__', '__doc__', '__import__', '__loader__', '__name__', '__package__', '__spec__', 'abs', 'aiter', 'all', 'anext', 'any', 'ascii', 'bin', 'bool', 'breakpoint', 'bytearray', 'bytes', 'callable', 'chr', 'classmethod', 'compile', 'complex', 'copyright', 'credits', 'delattr', 'dict', 'dir', 'divmod', 'enumerate', 'eval', 'exec', 'exit', 'filter', 'float', 'format', 'frozenset', 'getattr', 'globals', 'hasattr', 'hash', 'help', 'hex', 'id', 'input', 'int', 'isinstance', 'issubclass', 'iter', 'len', 'license', 'list', 'locals', 'map', 'max', 'memoryview', 'min', 'next', 'object', 'oct', 'open', 'ord', 'pow', 'print', 'property', 'quit', 'range', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip']
 
 ```
-If you look closely the blacklisted "exec" and "__import__" are built-in. If we can somehow gain access to the *__builtins__* object, we could call them; however, "builtins" is also blacklisted.
+If you look closely the blacklisted `exec` and `__import__` are built-in. If we can somehow gain access to the `__builtins__` object, we could call them; however, "builtins" is also blacklisted.
 
-Luckily, the *globals* namespace gives us access to a dictionary that maps names to global objects.
+Luckily, the `globals` namespace gives us access to a dictionary that maps names to global objects.
 
 ```bash
 ┌──(kali㉿kali)-[~]
