@@ -1,6 +1,7 @@
 ---
 title: "Test"
 description: "This is my first test article"
+draft: true
 categories: ["HTB"]
 tags: ["easy"]
 ---

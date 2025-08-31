@@ -13,17 +13,17 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://localhost:1313/crocpit/hackthebox/code/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://localhost:1313/crocpit/</loc>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:1313/crocpit/hackthebox/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:1313/crocpit/hackthebox/test/</loc>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
