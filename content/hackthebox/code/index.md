@@ -1,6 +1,7 @@
 ---
 title: "[Easy] HTB Code Writeup"
 description: "This is my first test article"
+date: 2025-08-31T03:27:00Z
 categories: ["HTB"]
 tags: ["Path Traversal", "Web Filter Bypass", "Python"]
 featureimage: "https://htb-mp-prod-public-storage.s3.eu-central-1.amazonaws.com/avatars/55cc3528cd7ad96f67c4f0c715efe286.png"
