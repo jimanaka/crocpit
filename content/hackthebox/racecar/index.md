@@ -170,7 +170,7 @@ do {
 race_type = ::race_type();
 ```
 
-If the car type is 1 and the race type is 2, or if the car type is 2 and the race type is 2, then the race type gets set to a random number between 1-10, and another random number is generated between 1-100.
+If the car type is 1 and the race type is 2, or if the car type is 2 and the race type is 2, then the race type gets set to a random number between 0-9, and another random number is generated between 0-99.
 
 ```c
   if (((car_type == 1) && (race_type == 2)) || ((car_type == 2 && (race_type == 2)))) {
@@ -192,7 +192,7 @@ If the car type is 1 and race type is 1, or if the car type is 2 and race type i
   }
 ```
 
-Otherwise, both ranges are 1-100
+Otherwise, both ranges are 0-99
 
 ```c
   else {
@@ -290,7 +290,7 @@ puts(
 printf(__format);
 ```
 
-Like the other user inputs, `read()` is being called properly and will never read more bytes than the size of the destination buffer. However, our user input is being directly used in `printf()`. Ghidra even is so kind to decompile the variable as `__format` to give us a little hint. This leads us to the discovery of a format string vulnerability.
+Like the other user inputs, `read()` is being called properly and will never read more bytes than the size of the destination buffer. However, our user input is being directly used in `printf()`. Ghidra is even so kind to decompile the variable as `__format` to give us a little hint. This leads us to the discovery of a format string vulnerability.
 
 ## Format String Vulnerability
 
@@ -317,7 +317,13 @@ We can also use multiple variables like so.
 printf("Hello, %s %s\n", a, a);
 ```
 
-Which would output: "Hello, World! World!". Each pattern of '%' (a format specifier)  represents a parameter we are trying to format and print. But here's a question, what happens if the number of format specifiers and the number of follow-on parameters don't match? What if we have more or less parameters than our format string describes? Let's just run it and see what happens.
+```bash
+croc:content/hackthebox/racecar
+➜ ./a.out
+Hello, world! world!
+```
+
+Each pattern of '%' (a format specifier)  represents a parameter we are trying to format and print. But here's a question, what happens if the number of format specifiers and the number of follow-on parameters don't match? What if we have more or less parameters than our format string describes? Let's just run it and see what happens.
 
 ```c
 printf("Hello\n", a);
@@ -396,7 +402,7 @@ When we zoom out and take a broader look at the stack, you can see the test flag
 
 ## Exploitation
 
-Finally. Enough is enough, time to exploit.
+Finally, it's time to exploit.
 
 We are not sure how many format specifiers we need to throw to directly return the flag, but maybe we don't need to! We can just throw a bunch and hope the flag get's printed. If it doesn't, you can always just add more specifiers until it does.
 
@@ -407,7 +413,7 @@ Additionally, because we are just printing out bytes (and they are in little end
 └─$ echo -n "AAAA" > flag.txt
 ```
 
-To quickly test, I'll create a quick python script to pragmatically interact with the process.
+To quickly test, I'll create a quick python script to programatically interact with the process.
 
 ```python3
 from pwn import *
@@ -443,7 +449,7 @@ The Man, the Myth, the Legend! The grand winner of the race wants the whole worl
 
 Running the exploit, you can see the data that corresponds with "AAAA" as the 12th word (41414141)!
 
-Before we run this against the real program, let's quickly translate these bytes into printable characters. We will have to swap the endiannes of each word, then convert them to ascii characters if possible.
+Before we run this against the real program, let's quickly translate these bytes into printable characters. We will have to swap the endiannes of each word, then convert them to ascii characters if possible (Thanks Claude!).
 
 ```python3
 s = input('Input string: ')
@@ -515,4 +521,4 @@ I've censored the flag, but it's right there in the output for all to see :).
 
 ## Conclusion
 
-If you've made it this far, thank you, and I hope you learned something (as did I!). Happy hacking!
+If you've made it this far, thank you. Honestly, these writeups are more for me to solidify my own knowledge, but I hope you learned something as well. Happy hacking!

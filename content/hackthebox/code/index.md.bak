@@ -35,7 +35,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 7.67 seconds
 ```
-Looks like there's an SSH and HTTP service running. The SSH service is usually not vulnerable with HTB, so we can enumerate the HTTP service first.
+Looks like theres an SSH and HTTP service running. The SSH service is usually not vulnerable with HTB, so we can enumerate the HTTP service first.
 
 ## Web Enumeration
 First we add the host to our `/etc/hosts` file
@@ -92,7 +92,7 @@ Would you look at that, globals maps a string key to the __builtins__ object, so
 
 ![Accessing builtin functions](web-5.png)
 
-Oh, did I mention "globals" isn't blacklisted :)? I guess the lesson is, if you are going to make a blacklist, you better make sure you blacklist *everything*. Better yet, just do something other than a blacklist -_-.
+Oh, did I mention "globals" isn't blacklisted :)? I guess the lesson is, if you are going ot make a blacklist, you better make sure you blacklist *everything*. Better yet, just do something other than a blacklist -_-.
 
 With access to builtin functions, let's just try calling exec to see what happens.
 
@@ -169,7 +169,7 @@ cat user.txt
 ```
 
 ## Privesc to martin
-The first thing I saw was that we have access to the app's backend. Usually, I would upgrade my shell, but the connection dies too often for that to matter. The connection also dies too quickly for us to properly do on-net analysis, thus we zip the entire directory and transfer it to our attack host to take our sweet time.
+The first thing I saw was that we have access to the app's backend. Usually, I would upgrade my shell, but the connection dies too often for that to matter. The connection also dies too quickly for us to properly do on-net analysis, thus we zip the entire directory and tranfer it to our attack host to take our sweet time.
 
 You could implement some persistence measures here, but meh.
 
@@ -275,7 +275,7 @@ martin@code:~$
 ```
 ## Privesc to root
 
-While getting the lay of the land, we come across some sudo permissions.
+While getting the lay of the land, we come accross some sudo permissions.
 
 ```bash
 martin@code:~$ sudo -l
@@ -318,7 +318,7 @@ done
 
 For the path traversal prevention, we can simply extend `../` to `....//` so that when `../` is replaced, it still leaves behind a `../`. I guess next time they should have looped until none were left ;).
 
-With directory traversal, we can have our path start with either `/var/` or `/home/`, then traverse to any location we want. This means we can backup `/root`!
+With directory traversal, we can have our path start with either `/var/` or `/home/`, then traverse to any location we want. This means we can bakup `/root`!
 
 Our home folder conveniently has a `task.json` read for modifying!
 
