@@ -3,6 +3,7 @@ languageCode = "en"
 languageName = "English"
 weight = 1
 title = "Crocpit"
+baseURL = "https://bloc.croc.rip/"
 
 [params]
   displayName = "EN"
