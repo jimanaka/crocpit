@@ -1,6 +1,6 @@
 ---
 title: "[Easy] HTB Code Writeup"
-description: "This is my first test article"
+description: "Writeup for HTB Code"
 date: 2025-08-31T03:27:00Z
 categories: ["HTB"]
 tags: ["Path Traversal", "Web Filter Bypass", "Python"]
