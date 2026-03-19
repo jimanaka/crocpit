@@ -6,6 +6,7 @@ categories: ["HTB"]
 tags: ["Binary Exploitation", "Format String"]
 featureimage: "https://htb-mp-prod-public-storage.s3.eu-central-1.amazonaws.com/tracks/57.png"
 ---
+![success](success.png)
 
 Hi all! This will be a quick writeup for the HackTheBox challenge [racecar](https://app.hackthebox.com/challenges/racecar?tab=play_challenge).
 

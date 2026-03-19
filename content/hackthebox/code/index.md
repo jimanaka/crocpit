@@ -6,6 +6,8 @@ categories: ["HTB"]
 tags: ["Path Traversal", "Web Filter Bypass", "Python"]
 featureimage: "https://htb-mp-prod-public-storage.s3.eu-central-1.amazonaws.com/avatars/55cc3528cd7ad96f67c4f0c715efe286.png"
 ---
+![success](success.png)
+
 Welcome to my first HTB writeup/walkthrough. Having just received a new keyboard from my wonderful partner, I've gained the drive to finally start posting writeups as I learn offsec with HTB.
 
 Have you ever thought you knew something then experienced something that made you think *nevermind*? Well that was me with Code. Having used Python extensively in college, I thought I was pretty decent--at least not a novice. But well... let's just say I got put back in my place.
