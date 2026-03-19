@@ -10,9 +10,9 @@ featureimage: "https://htb-mp-prod-public-storage.s3.eu-central-1.amazonaws.com/
 
 Hi all! This is a writeup for the HackTheBox Box [Escape](https://app.hackthebox.com/machines/Escape).
 
-This box is part of HTB's [Active Directory Track](https://app.hackthebox.com/tracks/60), and is a great way to learn basic offsenive AD techniques and vulnerabilities.
+This box is part of HTB's [Active Directory Track](https://app.hackthebox.com/tracks/60), and is a great way to learn basic offensive AD techniques and vulnerabilities.
 
-The box begins by leveraging an anonymouse service login. From there, we discover user credentials for another available service. We then leak the service account's hash, crack it, then use the stolen credentials to pop a shell as the service account. Once we laterally move to a real user, we exploit a popular vulnerability in ADCS to excalate to root.
+The box begins by leveraging an anonymous service login. From there, we discover user credentials for another available service. We then leak the service account's hash, crack it, then use the stolen credentials to pop a shell as the service account. Once we laterally move to a real user, we exploit a popular vulnerability in ADCS to escalate to root.
 
 Let's get started :)
 
@@ -120,7 +120,7 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 207.62 seconds
 ```
 
-Of course, because it's a windows AD box, there's a lot of stuff. There are some things that pop out to me. First, our domain name is `sequel.htb`. Second, there is a lot of certificate/ssl information in this output which means there is probably a certificate authority running. I know this isn't realistic, but the fact that the name of the box is Escape, and the possibility of a certificate authority, made me think this would be an access vector in the future due to the famouse `ESC` family of vulnerabilities. Finally, our clock skew is almost 8 hours. This will be an issue if we need to do anything related to kerberos. Let's keep all of this in mind.
+Of course, because it's a windows AD box, there's a lot of stuff. There are some things that pop out to me. First, our domain name is `sequel.htb`. Second, there is a lot of certificate/ssl information in this output which means there is probably a certificate authority running. I know this isn't realistic, but the fact that the name of the box is Escape, and the possibility of a certificate authority, made me think this would be an access vector in the future due to the famous `ESC` family of vulnerabilities. Finally, our clock skew is almost 8 hours. This will be an issue if we need to do anything related to kerberos. Let's keep all of this in mind.
 
 Because we know the domain name, I'll add it to my `/etc/hosts` file.
 ```bash
@@ -132,7 +132,7 @@ Because we know the domain name, I'll add it to my `/etc/hosts` file.
 
 ### SMB
 
-I usually start with SMB. Espeicially because we are not given any breach credentials, it is good to look for anonymous access to any services.
+I usually start with SMB. Especially because we are not given any breach credentials, it is good to look for anonymous access to any services.
 
 ```bash
 ┌──(kali㉿kali)-[~/Documents/htb/escape-writeup]
@@ -169,9 +169,9 @@ SMB         10.129.9.23     445    DC               SYSVOL                      
 
 Nice, we have access to some shares!
 
-Why did guest authentication work, but our anonymouse logon attempt didn't?
+Why did guest authentication work, but our anonymous logon attempt didn't?
 
-Despite the similarities, anonymous logons (username = "") and guest logons (username = "guest|anonymous") are handled completely differently! Anonymous logons are handled by the built-in "Anonymous Logon" group, and any anonymous user will inherit permissions from this group. Allowing anonymous logons with this default behaviour can lead to the leakage of sensitive domain information. The "Anonymous Logon" group, by default, is a member of the "Pre-Windows 2000 Compatible Access" group, which has permissions to access a limited set of domain data like reading password policies, object descrptions, domain parameters, etc.
+Despite the similarities, anonymous logons (username = "") and guest logons (username = "guest|anonymous") are handled completely differently! Anonymous logons are handled by the built-in "Anonymous Logon" group, and any anonymous user will inherit permissions from this group. Allowing anonymous logons with this default behavior can lead to the leakage of sensitive domain information. The "Anonymous Logon" group, by default, is a member of the "Pre-Windows 2000 Compatible Access" group, which has permissions to access a limited set of domain data like reading password policies, object descriptions, domain parameters, etc.
 
 Guest authentication, however, is different in the sense that the "Guest" account is a real account on windows and AD systems. This means that if you only disable anonymous authentication, there is still a chance guest authentication is still enabled. This seems to be the case for our box.
 
@@ -208,7 +208,7 @@ We see one file. Let's download it and see what secrets it holds >:)
 └─$ xdg-open loot/smb/SQL\ Server\ Procedures.pdf
 ```
 
-This PDF has a few things that intially stand out to me. First, the employees are talking about a cloned/moc DC instance. This immediately makes me thing of the `DCSync` attack for privesc later. Second, emplyees are instructed to email brandon at `brandon.brown@sequel.htb`. If we ever needed to steal session keys to bypass web authentication, this could be a XSS target. Lastly, and most importantly, we are given guest credentials to the sql server `PublicUser:GuestUserCantWrite1`.
+This PDF has a few things that initially stand out to me. First, the employees are talking about a cloned/mock DC instance. This immediately makes me thing of the `DCSync` attack for privesc later. Second, employees are instructed to email Brandon at `brandon.brown@sequel.htb`. If we ever needed to steal session keys to bypass web authentication, this could be a XSS target. Lastly, and most importantly, we are given guest credentials to the SQL server `PublicUser:GuestUserCantWrite1`.
 
 ![guest-sql-creds](guest-sql-creds.png)
 
@@ -359,7 +359,7 @@ Looking around the `C:\` drive, we see a directory that seems to be meant for ou
 d-----         2/1/2023   1:02 PM                SQLServer
 ```
 
-Exploring this directory, we can see some setup configuration files and, more importantly, an error log. Opening the log, there's one erronious login attempt by the `ryan.cooper` user.
+Exploring this directory, we can see some setup configuration files and, more importantly, an error log. Opening the log, there's one erroneous login attempt by the `ryan.cooper` user.
 
 ```powershell
 *Evil-WinRM* PS C:\SQLServer\Logs> type ERRORLOG.BAK
@@ -370,7 +370,7 @@ Exploring this directory, we can see some setup configuration files and, more im
 <SNIP>
 ```
 
-Right below ryan's logon attempt, there's another failed logon attempt by username `NuclearMosquito3`. From this, it looks like `ryan.cooper` tried to log on, misclicked something, then put their password in the username and submitted again. Let's assume this is a password and give it a try.
+Right below Ryan's logon attempt, there's another failed logon attempt by username `NuclearMosquito3`. From this, it looks like `ryan.cooper` tried to log on, misclicked something, then put their password in the username and submitted again. Let's assume this is a password and give it a try.
 
 ```bash
 ┌──(kali㉿kali)-[~/Documents/htb/escape-writeup]
@@ -404,7 +404,7 @@ Info: Establishing connection to remote endpoint
 
 ## Privesc
 
-Now let's own the box. Again, running some situational awareness checks does't realy lead to much. Let's run bloodhound to get a better look.
+Now let's own the box. Again, running some situational awareness checks doesn't really lead to much. Let's run bloodhound to get a better look.
 
 ```bash
 ┌──(kali㉿kali)-[~/Documents/htb/escape-writeup]
@@ -483,7 +483,7 @@ Nice! Looks like ADCS is running, and `certipy-ad` has identified a vulnerable c
 ### ADCS
 
 ADCS is a service that manages Public Key Infrastructure (PKI) for a domain. There are 4 main components of ADCS that we can exploit:
-- Certificate Authority (CA): Signs and issues certificates. The CA is the root of trust in the ADCS heirarchy.
+- Certificate Authority (CA): Signs and issues certificates. The CA is the root of trust in the ADCS hierarchy.
 - Certificate Templates: Blueprints that define what certificates can be used for, and who can request said certificates.
 - Certificate Store: Where certificates are stored locally on a machine.
 - Auto-enrollment: Group policy-driven mechanism that automatically requests and renews certificates.
@@ -493,10 +493,10 @@ Specifically, we will be attack misconfigurations in Certificate Templates.
 In our case, the `UserAuthentication` certificate shown above has this unique set of misconfigured permissions:
 - Client Authentication: True
 - Enrollee Supplies Subject: True
-- Requres Management Approval: False
+- Requires Management Approval: False
 - Enrollment Permissions: Non-privileged domain groups included (SEQUEL.HTB\Domain Users)
 
-All of this combined means we can request this certificate template while also supplying **any** other account as a Subject Alternative Name (SAN), and the CA will sign in without asking any questions. The result of this is that we can present a CA-signed certificate saying we are root, and services are forced to trust it becuase it's valid :).
+All of this combined means we can request this certificate template while also supplying **any** other account as a Subject Alternative Name (SAN), and the CA will sign in without asking any questions. The result of this is that we can present a CA-signed certificate saying we are root, and services are forced to trust it because it's valid :).
 
 This combination of misconfigurations and exploitation steps is called the *ESC1* vulnerability.
 
@@ -569,7 +569,7 @@ impacket.krb5.kerberosv5.KerberosError: Kerberos SessionError: KRB_AP_ERR_SKEW(C
 [-] See the wiki for more information
 ```
 
-Nice, this tells us exactly what the problem is. Recall that our Nmap scan said our clock skew is about 8 hours from the DC. Kerberos' max clock skew is usually set to about 5 minutes. We are obviously waaaaaaaay out of that window. Luckily we can manually sync our time as Domain Controlers usually provide ntp services.
+Nice, this tells us exactly what the problem is. Recall that our Nmap scan said our clock skew is about 8 hours from the DC. Kerberos' max clock skew is usually set to about 5 minutes. We are obviously waaaaaaaay out of that window. Luckily we can manually sync our time as Domain Controllers usually provide ntp services.
 
 ```bash
 ┌──(kali㉿kali)-[~/Documents/htb/escape-writeup]
@@ -631,6 +631,6 @@ We're done!
 
 ## Conclusion
 
-Thanks again if you've made it this far. This was a *great* box that I would recommend you do yourself if you have any interested in doing Windows boxes. It also directly leads up to the EscapeTwo box that I will probably write up in the future. (Maybe soon because I'm tryint to catch up on writeups for boxes I've already solved).
+Thanks again if you've made it this far. This was a *great* box that I would recommend you do yourself if you have any interested in doing Windows boxes. It also directly leads up to the EscapeTwo box that I will probably write up in the future. (Maybe soon because I'm trying to catch up on writeups for boxes I've already solved).
 
 Later gators!
