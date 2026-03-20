@@ -488,7 +488,7 @@ ADCS is a service that manages Public Key Infrastructure (PKI) for a domain. The
 - Certificate Store: Where certificates are stored locally on a machine.
 - Auto-enrollment: Group policy-driven mechanism that automatically requests and renews certificates.
 
-Specifically, we will be attack misconfigurations in Certificate Templates.
+Specifically, we will be attacking misconfigurations in Certificate Templates.
 
 In our case, the `UserAuthentication` certificate shown above has this unique set of misconfigured permissions:
 - Client Authentication: True
@@ -496,7 +496,7 @@ In our case, the `UserAuthentication` certificate shown above has this unique se
 - Requires Management Approval: False
 - Enrollment Permissions: Non-privileged domain groups included (SEQUEL.HTB\Domain Users)
 
-All of this combined means we can request this certificate template while also supplying **any** other account as a Subject Alternative Name (SAN), and the CA will sign in without asking any questions. The result of this is that we can present a CA-signed certificate saying we are root, and services are forced to trust it because it's valid :).
+All of this combined means we can request this certificate template while also supplying **any** other account as a Subject Alternative Name (SAN), and the CA will sign it without asking any questions. The result of this is that we can present a CA-signed certificate saying we are root, and services are forced to trust it because it's valid :).
 
 This combination of misconfigurations and exploitation steps is called the *ESC1* vulnerability.
 
